@@ -74,7 +74,7 @@ bh, ah = torch.from_numpy(bh).to(device), torch.from_numpy(ah).to(device)
 
 下載後請將檔案放置於以下資料夾：
 ```perl
-RVC Inference/
+rvc_inference/
 ├── infer_CPU.py             # 主推論腳本
 ├── package.py               # 將 WebUI 模型轉換為 infer 專用格式
 ├── index.py                 # 訓練 index (.index)
