@@ -66,7 +66,13 @@ bh, ah = torch.from_numpy(bh).to(device), torch.from_numpy(ah).to(device)
 ---
 
 ## Usage
-1. 資料夾結構如下：
+### 1. 模型下載與放置方式
+請至本專案的 [Releases 頁面](https://github.com/wenting2110/ml-rvc-inference/releases) 下載下列兩個檔案：
+
+- `Teacher_infer.pth`：模型權重
+- `Teacher_infer.index`：聲音索引
+
+下載後請將檔案放置於以下資料夾：
 ```perl
 RVC Inference/
 ├── infer_CPU.py             # 主推論腳本
@@ -84,26 +90,24 @@ RVC Inference/
 ```
 
 
-2. 執行推論程式碼 `infer_CPU.py`
+### 2. 執行推論程式碼 `infer_CPU.py`
 ```bash
 cd rvc_inference
 python infer_CPU.py
 ```
 
 
-3. 推論完成後，音訊檔會儲存在專案根目錄，例如：
+### 3. 推論完成後，音訊檔會儲存在專案根目錄，例如：
 ```perl
 rvc_inference/Teacher_infer.wav
 ```
 ---
 
-### Optimization
-修改 `infer_CPU.py` 中的 `f0_up_key` 值。  
-`f0_up_key` 是 RVC 推論時控制音高（pitch）的參數，用來設定「**將輸入聲音升高或降低幾個音階（semitones）**」。  
-這會直接影響你轉出來的聲音是否像你目標聲音。
+### 4. Optimization：修改 `infer_CPU.py` 中的 `f0_up_key` value
+`f0_up_key` 是 RVC 推論時控制音高（pitch）的參數，用來設定「**將輸入聲音升高或降低幾個音階**」，影響轉換出來的聲音是否像目標聲音。
 
 
-## `f0_up_key` 的基本說明：
+* `f0_up_key` 的基本說明：
 | 數值 | 效果 |
 | --- | --- |
 | `0` | 不改變原始音高 |
@@ -111,7 +115,7 @@ rvc_inference/Teacher_infer.wav
 | `< 0` | 降低音高（聲音變低） |
 
 
-## 如何選擇 `f0_up_key` 值？
+* 如何選擇 `f0_up_key` 值？
 | 狀況 | 建議值範圍 |
 | --- | --- |
 | 男聲 → 女聲 | `+5 ~ +12` |
