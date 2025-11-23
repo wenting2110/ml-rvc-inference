@@ -1,24 +1,40 @@
 # RVC Inference
-使用 RVC（Retrieval-based Voice Conversion）模型進行語音轉換，支援 CPU 或 GPU 執行環境。可將一段原始語音轉換為指定目標聲音。
+使用 RVC（Retrieval-based Voice Conversion）模型進行語音轉換，支援 CPU 或 GPU 執行環境。  
+可將一段原始語音轉換為指定目標聲音。
 
 ---
 
 ## Installation
-在 Windows 上安裝透過 GitHub 安裝 fairseq，過程中需要建立 symbolic link 或複製某些目錄，預設權限不足會導致安裝失敗。
+在 Windows 上安裝透過 GitHub 安裝 fairseq，過程中需要建立 symbolic link 或複製某些目錄，預設權限不足會導致安裝失敗。  
 因此請使用「系統管理員身分」啟動你的終端機工具。
-1. 建立 Conda 環境並安裝 PyTorch (CPU 版本)
+### 1. 建立 Conda 環境並安裝 PyTorch (CPU 版本)
 ```bash
 conda create -n rvcinfer python=3.10
 conda activate rvcinfer
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 ```
 
-
-2. 安裝 Microsoft Visual C++ Build Tools（C++ 編譯器）
-
-3. Clone the repository 使用 requirements.txt 一次安裝所有套件
+### 2. 安裝 PyTorch 
+CPU 版本：
 ```bash
-git clone <repository-url> rvc_inference
+pip install torch==2.9.0+cpu torchaudio==2.9.0+cpu torchvision==0.24.0+cpu --index-url https://download.pytorch.org/whl/cpu
+```
+
+### 3. 安裝 Microsoft Visual C++ Build Tools（C++ 編譯器）
+`fairseq` 安裝時需要編譯 C++ 模組，**Windows 用戶必須安裝 C++ 編譯器**。
+
+請依下列方式安裝：
+
+1. 前往 [https://visualstudio.microsoft.com/visual-cpp-build-tools/](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
+2. 下載安裝程式
+3. 勾選「C++ build tools」工作負載
+4. 勾選「Windows 10 SDK」或「Windows 11 SDK」
+5. 安裝並重新啟動電腦（視情況）
+
+> macOS 或 Linux 系統通常已內建 C++ 編譯器，不需要執行這步驟。
+
+### 4. Clone the repository 使用 requirements.txt 一次安裝所有套件
+```bash
+git clone https://github.com/wenting2110/ml-rvc-inference rvc_inference
 cd rvc_inference
 pip install -r requirements.txt
 ```
@@ -27,13 +43,8 @@ pip install -r requirements.txt
 * 從 GitHub 安裝的 fairseq（需要 C++ 編譯）
 * inferrvc 套件（.whl 格式）
 
-4. 安裝 CPU 版本 PyTorch
-```bash
-pip install torch==2.9.0+cpu torchaudio==2.9.0+cpu torchvision==0.24.0+cpu --index-url https://download.pytorch.org/whl/cpu
-```
 
-
-5. 修改 inferrvc 原始碼（讓 CPU 模式正常運作）
+### 5. 修改 inferrvc 原始碼（讓 CPU 模式正常運作）
 如果你想在沒有 NVIDIA GPU 的電腦上使用 RVC 推論，請依下列方式修改 inferrvc 原始碼，讓其正確使用 CPU：
 
 * 開啟下列檔案：
@@ -46,7 +57,7 @@ pip install torch==2.9.0+cpu torchaudio==2.9.0+cpu torchvision==0.24.0+cpu --ind
 bh, ah = torch.from_numpy(bh).to(_gpu, non_blocking=True), torch.from_numpy(ah).to(_gpu, non_blocking=True)
 ```
 
-* 修改成以下內容：
+* 修改成以下內容，根據是否有 GPU 自動選擇裝置：
 ```py
 device = "cuda" if torch.cuda.is_available() else "cpu"
 bh, ah = torch.from_numpy(bh).to(device), torch.from_numpy(ah).to(device)
@@ -87,8 +98,9 @@ rvc_inference/Teacher_infer.wav
 ---
 
 ### Optimization
-修改 `infer_CPU.py` 中的 `f0_up_key` 值
-`f0_up_key` 是 RVC 推論時控制音高（pitch）的參數，用來設定「**將輸入聲音升高或降低幾個音階（semitones）**」。這會直接影響你轉出來的聲音是否像你目標聲音。
+修改 `infer_CPU.py` 中的 `f0_up_key` 值。  
+`f0_up_key` 是 RVC 推論時控制音高（pitch）的參數，用來設定「**將輸入聲音升高或降低幾個音階（semitones）**」。  
+這會直接影響你轉出來的聲音是否像你目標聲音。
 
 
 ## `f0_up_key` 的基本說明：
