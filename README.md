@@ -50,7 +50,7 @@ pip install -r requirements.txt
 
 
 ### 5. 修改 inferrvc 原始碼
-**1. 讓 CPU 模式正常運作：**  
+1. **讓 CPU 模式正常運作：**  
     如果你想在沒有 NVIDIA GPU 的電腦上使用 RVC 推論，請依下列方式修改 inferrvc 原始碼，讓其正確使用 CPU：
 
     * 開啟下列檔案：
@@ -69,7 +69,7 @@ pip install -r requirements.txt
     bh, ah = torch.from_numpy(bh).to(device), torch.from_numpy(ah).to(device)
     ```
 
-**2. 讓 GPU 模式正常運作：**  
+2. **讓 GPU 模式正常運作**：  
     torchaudio resample 不支援 FP16，會產生：
     ```bash
     RuntimeError: Input type (torch.cuda.HalfTensor) and weight type (torch.cuda.FloatTensor) should be the same
