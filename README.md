@@ -7,7 +7,7 @@
 ## Installation
 在 Windows 安裝 `fairseq` 需要編譯 C++，若未使用系統管理員身分啟動終端機可能會安裝失敗。
 因此建議全程使用 「系統管理員身分」啟動終端機。
-### 1. 建立 Conda 環境並安裝 PyTorch (CPU 版本)
+### 1. 建立 Conda 環境並安裝 PyTorch
 ```bash
 conda create -n rvcinfer python=3.10
 conda activate rvcinfer
